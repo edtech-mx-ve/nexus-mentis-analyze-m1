@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#103a44">
+  <meta name="description" content="NEXUS ANALYZE: práctica didáctica del Módulo 1. Preparación de Sentiment140, NLP, clasificación y evaluación.">
+  <title>NEXUS ANALYZE · Práctica de NLP</title>
+  <link rel="icon" href="/static/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/static/modulo1.css">
+  <link rel="stylesheet" href="/static/modulo1_info.css?v=m1info3">
+  <script src="/static/modulo1.js" defer></script>
+  <script src="/static/modulo1_info.js?v=m1info2" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#principal">Saltar al contenido</a>
+<header class="topbar">
+  <div class="container top-inner">
+    <a href="#inicio" class="brand" aria-label="NEXUS ANALYZE, inicio">
+      <img src="/static/nexus-logo.webp" alt="" width="40" height="40">
+      <span><strong>NEXUS MENTIS</strong><small>Módulo 1 · NEXUS ANALYZE</small></span>
+    </a>
+    <nav aria-label="Etapas de la práctica">
+      <a href="#datos">Datos</a><a href="#nlp">NLP</a><a href="#modelos">Modelos</a>
+      <a href="#evaluacion">Evaluación</a><a href="#laboratorio">Laboratorio</a><a href="#informacion">Información</a>
+    </nav>
+  </div>
+</header>
+<main id="principal" class="container">
+  <section id="inicio" class="hero" aria-labelledby="intro-title">
+    <div>
+      <p class="eyebrow">¿Qué vamos a aprender? · PRÁCTICA DIDÁCTICA</p>
+      <h1 id="intro-title">De un tweet a un sentimiento.</h1>
+      <p class="hero-lead">Aprende cómo se prepara un dataset, cómo NLP transforma texto en números y cómo se evalúa un clasificador de <strong>sentimiento positivo o negativo</strong>.</p>
+      <a class="action-link" href="#laboratorio">Probar el clasificador <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="hero-path" aria-label="Recorrido de la práctica">
+      <span>Dataset</span><span aria-hidden="true">→</span><span>Preparación</span>
+      <span aria-hidden="true">→</span><span>TF-IDF</span><span aria-hidden="true">→</span><strong>Clasificación</strong>
+    </div>
+  </section>
+  <p id="estado-api" class="status" role="status" aria-live="polite">Conectando con el modelo local…</p>
+
+  <section class="section" id="datos" aria-labelledby="datos-title">
+    <header class="section-header">
+      <span class="step" aria-hidden="true">01</span>
+      <div><h2 id="datos-title">Dataset y preparación</h2>
+        <p>Sentiment140: tweets reales en inglés, etiquetados como <strong>0 = negativo</strong> y <strong>4 = positivo</strong>.</p>
+      </div>
+    </header>
+    <div class="stats four">
+      <article class="stat"><span>Dataset original</span><strong id="origen-total">—</strong></article>
+      <article class="stat"><span>Muestra seleccionada</span><strong id="muestra-total">—</strong></article>
+      <article class="stat"><span>Descartados</span><strong id="descartados-total">—</strong></article>
+      <article class="stat"><span>Registros preparados</span><strong id="limpios-total">—</strong></article>
+    </div>
+    <ol class="prep-flow">
+      <li><strong>Validar</strong><small>Columnas, etiquetas y texto.</small></li>
+      <li><strong>Seleccionar</strong><small>Muestra equilibrada y reproducible.</small></li>
+      <li><strong>Limpiar</strong><small>Normalizar y retirar registros no utilizables.</small></li>
+      <li><strong>Separar</strong><small>Entrenar, validar y probar sin mezclar.</small></li>
+    </ol>
+    <div class="panel" aria-labelledby="split-title">
+      <div class="panel-heading">
+        <h3 id="split-title">¿Para qué usamos los datos?</h3>
+        <p>Tres conjuntos con funciones distintas, sin reutilizar la prueba para elegir el modelo.</p>
+      </div>
+      <div id="split-bar" class="split-bar" role="img" aria-label="Esperando distribución de los datos"></div>
+      <div id="split-legend" class="split-legend" aria-live="polite"><p>Esperando datos del reporte…</p></div>
+      <p id="limpieza-resumen" class="micro">Cargando auditoría de preparación…</p>
+      <p class="micro">El vocabulario TF-IDF se ajusta únicamente con entrenamiento. Se conservan negaciones como <em>not</em>.</p>
+    </div>
+  </section>
+
+  <section class="section" id="nlp" aria-labelledby="nlp-title">
+    <header class="section-header"><span class="step" aria-hidden="true">02</span>
+      <div><h2 id="nlp-title">Preparar texto con NLP</h2>
+        <p>El clasificador no interpreta texto directamente: necesita características numéricas.</p></div>
+    </header>
+    <div class="nlp-flow">
+      <article><span class="mini-step">Entrada</span><code>I LOVE this movie!!!</code></article>
+      <article><span class="mini-step">Normalización</span><code>i love this movie!!!</code></article>
+      <article><span class="mini-step">Tokens y n-gramas</span><div class="tokens"><span>love</span><span>movie</span><span>love this</span></div></article>
+      <article><span class="mini-step">TF-IDF</span><strong>Texto → vector numérico</strong></article>
+    </div>
+    <p class="micro">Ejemplo simplificado, no salida literal del tokenizador. En <a href="#laboratorio">Laboratorio</a> puedes ver los tokens y pesos TF-IDF reales de tu publicación.</p>
+  </section>
+
+  <section class="section" id="modelos" aria-labelledby="modelos-title">
+    <header class="section-header"><span class="step" aria-hidden="true">03</span>
+      <div><h2 id="modelos-title">Comparar y seleccionar modelos</h2>
+        <p>Comparamos Naive Bayes, SVM lineal y Regresión logística mediante la misma validación.</p></div>
+    </header>
+    <div class="panel" aria-labelledby="comparison-title">
+      <div class="panel-heading">
+        <h3 id="comparison-title">F1 macro y exactitud · Validación</h3>
+        <p>Cuanto mayor sea el valor, mejor el resultado. Se elige el algoritmo antes de utilizar la prueba final.</p>
+      </div>
+      <div class="legend"><span><i class="dot f1"></i>F1 macro</span><span><i class="dot accuracy"></i>Exactitud</span></div>
+      <div id="comparison-bars" class="chart-bars" aria-live="polite"><p class="loading">Cargando comparación…</p></div>
+      <p id="selection-note" class="micro">Modelo seleccionado: —</p>
+    </div>
+    <details class="disclosure">
+      <summary>Ver tabla de validación</summary>
+      <div class="table-scroll"><table>
+        <caption>Resultados reales de los tres clasificadores</caption>
+        <thead><tr><th scope="col">Modelo</th><th scope="col">F1 macro</th><th scope="col">Exactitud</th></tr></thead>
+        <tbody id="tabla-modelos"><tr><td colspan="3">Cargando resultados…</td></tr></tbody>
+      </table></div>
+    </details>
+  </section>
+
+  <section class="section" id="evaluacion" aria-labelledby="evaluacion-title">
+    <header class="section-header"><span class="step" aria-hidden="true">04</span>
+      <div><h2 id="evaluacion-title">Evaluación final</h2>
+        <p>El conjunto de prueba en inglés mide el resultado del modelo seleccionado en datos reservados.</p></div>
+    </header>
+    <div class="stats four">
+      <article class="stat"><span>Exactitud</span><strong id="accuracy-prueba">—</strong></article>
+      <article class="stat"><span>Precisión macro</span><strong id="precision-prueba">—</strong></article>
+      <article class="stat"><span>Recall macro</span><strong id="recall-prueba">—</strong></article>
+      <article class="stat"><span>F1 macro</span><strong id="f1-prueba">—</strong></article>
+    </div>
+    <p class="micro">Exactitud: proporción de aciertos. Precisión: predicciones acertadas por clase. Recall: casos reales detectados. F1: equilibrio entre precisión y recall.</p>
+    <div class="two-panels">
+      <article class="panel" aria-labelledby="validtest-title">
+        <div class="panel-heading"><h3 id="validtest-title">Validación frente a prueba</h3>
+          <p>Validación selecciona; prueba estima la generalización.</p></div>
+        <div class="legend"><span><i class="dot validation"></i>Validación</span><span><i class="dot testing"></i>Prueba</span></div>
+        <div id="comparison-splits" class="chart-bars" aria-live="polite"><p class="loading">Cargando…</p></div>
+      </article>
+      <article class="panel" aria-labelledby="matrix-title">
+        <div class="panel-heading"><h3 id="matrix-title">Matriz de confusión · Prueba</h3>
+          <p>Diagonal: aciertos; otras celdas: errores.</p></div>
+        <div id="matriz" class="confusion" aria-live="polite"><p class="loading">Cargando…</p></div>
+        <p id="matriz-summary" class="micro">—</p>
+      </article>
+    </div>
+    <details class="disclosure">
+      <summary>Ver precisión, recall y F1 por sentimiento</summary>
+      <div class="table-scroll"><table>
+        <caption>Métricas derivadas de la matriz de confusión</caption>
+        <thead><tr><th scope="col">Sentimiento</th><th scope="col">Precisión</th><th scope="col">Recall</th><th scope="col">F1</th><th scope="col">Casos reales</th></tr></thead>
+        <tbody id="metricas-clase"><tr><td colspan="5">Cargando resultados…</td></tr></tbody>
+      </table></div>
+    </details>
+  </section>
+
+  <section class="section" id="laboratorio" aria-labelledby="lab-title">
+    <header class="section-header"><span class="step" aria-hidden="true">05</span>
+      <div><h2 id="lab-title">Laboratorio: clasifica un tweet</h2>
+        <p>Prueba el mismo modelo que se evaluó. Predice <strong>positivo</strong> o <strong>negativo</strong>.</p></div>
+    </header>
+    <div class="lab-grid">
+      <form id="prediction-form" class="panel">
+        <label for="idioma">Idioma</label>
+        <select id="idioma"><option value="en">Inglés (directo)</option><option value="es">Español (traducción local)</option></select>
+        <label for="tweet">Publicación</label>
+        <textarea id="tweet" minlength="3" maxlength="1000" rows="5" required placeholder="Escribe tu tweet…"></textarea>
+
+        <button type="submit" id="clasificar" class="primary">Clasificar sentimiento</button>
+        <p class="micro">No introduzcas datos personales. La clasificación puede equivocarse.</p>
+      </form>
+      <div class="panel result-panel" aria-live="polite">
+        <span class="mini-step">RESULTADO</span>
+        <strong id="resultado-sentimiento" class="result-main">Escribe un tweet para comenzar</strong>
+        <p id="resultado-nota">Modelo: <span id="modelo-activo">—</span></p>
+        <p id="resultado-error" class="error" role="alert" hidden></p>
+        <details id="traza-detalle" class="disclosure" hidden>
+          <summary>Ver el NLP aplicado a este tweet</summary>
+          <p><strong>Texto normalizado:</strong> <code id="texto-normalizado">—</code></p>
+          <p><strong>Tokens:</strong> <span id="tokens-reales">—</span></p>
+          <p><strong>N-gramas:</strong> <span id="ngrams-reales">—</span></p>
+          <p id="vector-resumen">—</p>
+          <div class="table-scroll"><table><caption>Pesos TF-IDF reales del vector</caption>
+            <thead><tr><th scope="col">Término</th><th scope="col">Peso</th></tr></thead>
+            <tbody id="pesos-reales"></tbody></table></div>
+          <p class="micro">TF-IDF mide el peso de las características, no la probabilidad de sentimiento.</p>
+        </details>
+      </div>
+    </div>
+    <p class="future-note"><strong>Posibles ampliaciones:</strong> reconocimiento de sarcasmo, ironía y contrastes. No forman parte del alcance de esta práctica.</p>
+  </section>
+<section class="section info-section" id="informacion" aria-labelledby="informacion-title">
+  <header class="section-header">
+    <span class="step step-info" aria-hidden="true">i</span>
+    <div>
+      <h2 id="informacion-title">Información y apoyo</h2>
+      <p>Conoce el proyecto, el dataset, su identidad y los créditos académicos.</p>
+    </div>
+  </header>
+  <div class="info-tablist" role="tablist" aria-label="Información complementaria">
+    <button id="tab-acerca" class="info-tab" type="button" role="tab" aria-selected="true"
+            aria-controls="panel-acerca" tabindex="0">Acerca de</button>
+    <button id="tab-dataset" class="info-tab" type="button" role="tab" aria-selected="false"
+            aria-controls="panel-dataset" tabindex="-1">Dataset</button>
+    <button id="tab-trivia" class="info-tab" type="button" role="tab" aria-selected="false"
+            aria-controls="panel-trivia" tabindex="-1">Trivia</button>
+    <button id="tab-ayuda" class="info-tab" type="button" role="tab" aria-selected="false"
+            aria-controls="panel-ayuda" tabindex="-1">Ayuda</button>
+    <button id="tab-institucional" class="info-tab" type="button" role="tab" aria-selected="false"
+            aria-controls="panel-institucional" tabindex="-1">Institucional</button>
+  </div>
+
+  <div class="info-panel" id="panel-acerca" role="tabpanel" aria-labelledby="tab-acerca" tabindex="0">
+    <h3>Acerca de NEXUS ANALYZE</h3>
+    <p><strong>NEXUS ANALYZE</strong> es el Módulo 1 de NEXUS MENTIS: una aplicación web
+       didáctica que clasifica publicaciones de <strong>Twitter, actualmente X</strong>,
+       como <strong>positivas o negativas</strong>.</p>
+    <p>Su finalidad es comprender cómo se aplican técnicas de inteligencia artificial
+       a datos de redes sociales: preparar textos, representarlos con <strong>NLP y TF-IDF</strong>,
+       entrenar clasificadores y evaluar sus resultados.</p>
+    <div class="info-process" aria-label="Etapas de la práctica">
+      Dataset <span aria-hidden="true">→</span> Preparación <span aria-hidden="true">→</span>
+      NLP <span aria-hidden="true">→</span> Machine Learning <span aria-hidden="true">→</span> Evaluación
+    </div>
+    <p class="info-muted">El reconocimiento avanzado de sarcasmo, ironía y contrastes
+       queda como posible ampliación; no es un requisito de esta práctica.</p>
+  </div>
+
+  <div class="info-panel" id="panel-dataset" role="tabpanel" aria-labelledby="tab-dataset" tabindex="0" hidden>
+    <h3>Dataset Sentiment140</h3>
+    <p>Tweets históricos en inglés de Twitter (hoy X), etiquetados para el análisis binario
+       de sentimientos. Las etiquetas fueron obtenidas mediante supervisión distante
+       basada en emoticonos; pueden contener errores.</p>
+    <div class="info-facts" aria-label="Características del dataset">
+      <div><span>Registros originales</span><strong>1.600.000</strong></div>
+      <div><span>Muestra del proyecto</span><strong>200.000</strong></div>
+      <div><span>Registros preparados</span><strong>195.997</strong></div>
+      <div><span>Sentimientos</span><strong>2 clases</strong></div>
+    </div>
+    <p class="info-small"><strong>Etiquetas:</strong> 0 = negativo; 4 = positivo.
+       <strong>Archivo original:</strong> 6 campos (etiqueta, identificador, fecha, consulta, usuario y texto).</p>
+    <h4>Cómo utilizamos la muestra</h4>
+    <div class="info-split" role="img"
+         aria-label="De 195.997 tweets preparados: 137.197 entrenamiento, 29.400 validación y 29.400 prueba">
+      <span class="info-split-train" style="flex:137197"></span>
+      <span class="info-split-valid" style="flex:29400"></span>
+      <span class="info-split-test" style="flex:29400"></span>
+    </div>
+    <div class="info-split-legend">
+      <span><i class="info-key info-split-train"></i>Entrenamiento: <strong>137.197</strong></span>
+      <span><i class="info-key info-split-valid"></i>Validación: <strong>29.400</strong></span>
+      <span><i class="info-key info-split-test"></i>Prueba: <strong>29.400</strong></span>
+    </div>
+    <p class="info-small">La muestra inicial equivale al <strong>12,5 %</strong> del corpus original.
+       Tras la preparación se descartaron <strong>4.003</strong> registros.
+       La evaluación final se realizó sobre <strong>29.400 tweets de prueba en inglés</strong>.
+       <a href="#datos">Ver preparación detallada</a>.</p>
+    <h4>¿Qué relación tiene con Big Data?</h4>
+    <p>Las redes sociales generan grandes <strong>volúmenes</strong> y distintos tipos de
+       información (<strong>variedad</strong>) a gran <strong>velocidad</strong>.
+       Aquí estudiamos una muestra histórica de texto; <strong>no</strong> procesamos
+       publicaciones en tiempo real ni usamos computación distribuida.</p>
+    <h4>Comprobación manual adicional</h4>
+    <p>Se verificaron 10 textos de demostración (6 en español y 4 en inglés).
+       Estas pruebas funcionales <strong>no forman parte</strong> de las métricas de los
+       29.400 tweets reservados.</p>
+    <h4>Fuentes y créditos</h4>
+    <p class="info-small"><strong>Fuente original:</strong>
+      <a href="https://cs.stanford.edu/people/alecmgo/trainingandtestdata.zip"
+         target="_blank" rel="noopener noreferrer">Stanford — descarga de Sentiment140</a>.</p>
+    <p class="info-small"><strong>Consulta complementaria:</strong>
+      <a href="https://www.kaggle.com/datasets/kazanova/sentiment140"
+         target="_blank" rel="noopener noreferrer">Kaggle — Sentiment140</a>.
+       Esta ficha es una referencia adicional; el dataset utilizado por la práctica
+       procede de la descarga académica original de Stanford.</p>
+    <p class="info-small"><strong>Publicación:</strong> Go, A.; Bhayani, R.; Huang, L. (2009).
+      <em>Twitter Sentiment Classification using Distant Supervision</em>.
+      <a href="https://cs.stanford.edu/people/alecmgo/papers/TwitterDistantSupervision09.pdf"
+         target="_blank" rel="noopener noreferrer">Consultar artículo</a>.</p>
+  </div>
+
+  <div class="info-panel" id="panel-trivia" role="tabpanel" aria-labelledby="tab-trivia" tabindex="0" hidden>
+    <h3>Trivia: ¿de dónde viene NEXUS MENTIS?</h3>
+    <p><strong>NEXUS MENTIS</strong> combina dos términos de origen latino:</p>
+    <ul class="info-list">
+      <li><strong>Nexus:</strong> unión, vínculo o conexión.</li>
+      <li><strong>Mentis:</strong> «de la mente» o del pensamiento.</li>
+    </ul>
+    <p>Su interpretación conceptual es <strong>«conexión de mentes e ideas»</strong>.</p>
+    <h4>¿Qué significa NEXUS ANALYZE?</h4>
+    <p>Es el módulo que analiza el sentimiento expresado en textos de redes sociales
+       mediante técnicas de NLP y Machine Learning.</p>
+    <h4>¿Por qué Twitter se llama ahora X?</h4>
+    <p>Twitter adoptó la marca <strong>X</strong>. Sentiment140 conserva tweets
+       históricos de la plataforma bajo su nombre anterior: <strong>Twitter</strong>.</p>
+    <h4>¿Qué representa el logotipo?</h4>
+    <div class="info-logo-row">
+      <img src="/static/nexus-logo.webp" alt="Logotipo de NEXUS MENTIS" width="64" height="64">
+      <p>Identifica visualmente a NEXUS MENTIS y acompaña su idea de
+         <strong>conectar comunicación, pensamiento e inteligencia artificial</strong>.</p>
+    </div>
+  </div>
+
+  <div class="info-panel" id="panel-ayuda" role="tabpanel" aria-labelledby="tab-ayuda" tabindex="0" hidden>
+    <h3>Ayuda: recorrido rápido</h3>
+    <ol class="info-help">
+      <li><strong>Datos:</strong> conoce Sentiment140 y su preparación.</li>
+      <li><strong>NLP:</strong> observa limpieza, tokens, n-gramas y TF-IDF.</li>
+      <li><strong>Modelos:</strong> compara Naive Bayes, SVM y Regresión logística.</li>
+      <li><strong>Evaluación:</strong> interpreta exactitud, precisión, recall, F1 y matriz de confusión.</li>
+      <li><strong>Laboratorio:</strong> selecciona el idioma, escribe un tweet y pulsa
+          <strong>«Clasificar sentimiento»</strong>.</li>
+    </ol>
+    <p class="info-muted">Los mensajes en español se traducen localmente al inglés.
+       El modelo solo distingue positivo y negativo y puede equivocarse.</p>
+    <p class="info-small"><strong>Si la aplicación no responde:</strong> verifica que el
+       servidor local esté iniciado. Si no ves los cambios, actualiza con Ctrl+F5.</p>
+  </div>
+
+  <div class="info-panel institutional-panel" id="panel-institucional" role="tabpanel"
+       aria-labelledby="tab-institucional" tabindex="0" hidden>
+    <p class="info-overline">PROYECTO ACADÉMICO</p>
+    <h3>INSTITUTO INTERNACIONAL DE AGUASCALIENTES</h3>
+    <p>Maestría en Inteligencia Artificial para la Transformación Digital</p>
+    <h4>Información académica</h4>
+    <dl class="info-data-list">
+      <div><dt>Asignatura</dt><dd>Tópicos de IA para la Transformación Digital</dd></div>
+      <div><dt>Aplicación</dt><dd><strong>NEXUS MENTIS — NEXUS ANALYZE</strong></dd></div>
+      <div><dt>Módulo</dt><dd>1 — Análisis de sentimientos</dd></div>
+    </dl>
+    <h4>Autoría académica</h4>
+    <dl class="info-data-list">
+      <div><dt>Alumno</dt><dd>Antonio Nicolás Toro González</dd></div>
+      <div><dt>Tutor</dt><dd>Dr. Francisco Javier Luna Rosas</dd></div>
+    </dl>
+    <h4>Descripción del proyecto</h4>
+    <p>Aplicación web didáctica desarrollada en Python que analiza tweets históricos
+       mediante preparación de datos, NLP, vectorización TF-IDF y clasificación
+       binaria de sentimientos. Compara tres algoritmos supervisados, presenta
+       sus métricas de evaluación y permite probar publicaciones en un laboratorio.</p>
+    <h4>Identificación técnica</h4>
+    <div class="info-table-scroll">
+      <table class="info-tech">
+        <thead><tr><th scope="col">Componente</th><th scope="col">Tecnología / referencia</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Lenguaje</th><td>Python</td></tr>
+          <tr><th scope="row">Dataset</th><td>Sentiment140 — Twitter (actualmente X)</td></tr>
+          <tr><th scope="row">NLP</th><td>Normalización, tokenización y n-gramas</td></tr>
+          <tr><th scope="row">Vectorización</th><td>TF-IDF</td></tr>
+          <tr><th scope="row">Clasificadores</th><td>Naive Bayes, SVM lineal y Regresión logística</td></tr>
+          <tr><th scope="row">Modelo activo</th><td>Regresión logística</td></tr>
+          <tr><th scope="row">Evaluación</th><td>scikit-learn; exactitud, precisión, recall, F1 y matriz de confusión</td></tr>
+          <tr><th scope="row">API</th><td>FastAPI</td></tr>
+          <tr><th scope="row">Interfaz</th><td>HTML, CSS y JavaScript</td></tr>
+          <tr><th scope="row">Traducción</th><td>Argos Translate, español a inglés, local</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="footer"><div class="container"><strong>NEXUS MENTIS</strong><span>Módulo 1 · NLP + Machine Learning · Clasificación binaria</span></div></footer>
+</body>
+</html>

@@ -1,0 +1,149 @@
+{
+  "version": "0.5.0",
+  "created_utc": "2026-11-05T05:32:20.004411+00:00",
+  "data_origin": "Sentiment140 Stanford — archivo oficial verificado",
+  "source_verification": {
+    "status": "official_verified",
+    "source": "https://cs.stanford.edu/people/alecmgo/trainingandtestdata.zip",
+    "archive_sha256": "004a3772c8a7ff9bbfeb875880f47f0679d93fc63e5cf9cff72d54a8a6162e57",
+    "csv_sha256": "08cba6317a49528fcd074f9043aafcd5ad6c6be45ede159c4e36cec33af24afe"
+  },
+  "demo": false,
+  "seed": 42,
+  "environment": {
+    "python": "3.11.9",
+    "platform": "Windows",
+    "cpu_logical": 8,
+    "library_sklearn": "1.9.1"
+  },
+  "audit": {
+    "source_rows": 1600000,
+    "source_file_bytes": 238803811,
+    "source_sha256": "08cba6317a49528fcd074f9043aafcd5ad6c6be45ede159c4e36cec33af24afe",
+    "source_valid_rows": 1600000,
+    "malformed_rows": 0,
+    "invalid_label_rows": 0,
+    "empty_text_rows": 0,
+    "source_labels": {
+      "negativo": 800000,
+      "positivo": 800000
+    },
+    "sampled_valid_rows": 200000,
+    "sampled_conflicting_texts_removed": 183,
+    "sampled_conflicting_records_removed": 1441,
+    "sampled_duplicates_removed": 2562,
+    "clean_rows": 195997,
+    "clean_labels": {
+      "negativo": 98368,
+      "positivo": 97629
+    },
+    "sample_limit": 200000,
+    "seed": 42,
+    "clean_negative_pct": 50.19,
+    "clean_positive_pct": 49.81,
+    "clean_text_length_mean": 72.54,
+    "clean_text_length_median": 68.0
+  },
+  "splits": {
+    "train": 137197,
+    "validation": 29400,
+    "test": 29400
+  },
+  "baseline_validation": {
+    "accuracy": 0.5019047619047619,
+    "f1_macro": 0.33417882054533926,
+    "precision_macro": 0.2509523809523809,
+    "recall_macro": 0.5
+  },
+  "models_validation": [
+    {
+      "model": "Regresión logística",
+      "train_seconds": 4.249,
+      "accuracy": 0.8044217687074829,
+      "f1_macro": 0.8044123518261299,
+      "precision_macro": 0.8045507317759639,
+      "recall_macro": 0.8044598768391585
+    },
+    {
+      "model": "SVM lineal",
+      "train_seconds": 5.707,
+      "accuracy": 0.7904081632653062,
+      "f1_macro": 0.7903955573171497,
+      "precision_macro": 0.7905534123560878,
+      "recall_macro": 0.7904491778824649
+    },
+    {
+      "model": "Naive Bayes",
+      "train_seconds": 3.903,
+      "accuracy": 0.7872448979591836,
+      "f1_macro": 0.787212815680217,
+      "precision_macro": 0.7873290702335067,
+      "recall_macro": 0.7872095455094392
+    }
+  ],
+  "selected_model": "Regresión logística",
+  "selection_metric": "f1_macro",
+  "cross_validation_on_train_validation": {
+    "folds": 3,
+    "f1_macro_mean": 0.797940107201835,
+    "f1_macro_std": 0.0005696347431383623
+  },
+  "test": {
+    "accuracy": 0.7997278911564626,
+    "f1_macro": 0.7997271117150306,
+    "precision_macro": 0.7997599848916983,
+    "recall_macro": 0.7997464678285213,
+    "confusion_matrix": [
+      [
+        11727,
+        3028
+      ],
+      [
+        2860,
+        11785
+      ]
+    ],
+    "classification_report": {
+      "negativo": {
+        "precision": 0.8039350106258998,
+        "recall": 0.7947814300237208,
+        "f1-score": 0.799332015540863,
+        "support": 14755.0
+      },
+      "positivo": {
+        "precision": 0.7955849591574968,
+        "recall": 0.8047115056333219,
+        "f1-score": 0.8001222078891982,
+        "support": 14645.0
+      },
+      "accuracy": 0.7997278911564626,
+      "macro avg": {
+        "precision": 0.7997599848916983,
+        "recall": 0.7997464678285213,
+        "f1-score": 0.7997271117150306,
+        "support": 29400.0
+      },
+      "weighted avg": {
+        "precision": 0.799775605736282,
+        "recall": 0.7997278911564626,
+        "f1-score": 0.7997256334640388,
+        "support": 29400.0
+      }
+    },
+    "inference_seconds_batch": 0.5116,
+    "inference_items": 29400,
+    "batch_throughput_tweets_per_s": 57465.29,
+    "local_inference_benchmark": {
+      "scope": "inferencia individual local del pipeline; excluye HTTP y navegador",
+      "sample_size": 100,
+      "mean_ms": 0.623,
+      "p50_ms": 0.6129,
+      "p95_ms": 0.6849,
+      "throughput_tweets_per_s": 1605.26,
+      "rss_before_mb": 329.84,
+      "rss_after_mb": 329.84,
+      "rss_delta_mb": 0.0
+    }
+  },
+  "total_train_seconds": 34.74
+}

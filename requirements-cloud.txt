@@ -1,0 +1,11 @@
+fastapi>=0.115,<1
+uvicorn>=0.30,<1
+pydantic>=2.6,<3
+numpy>=1.26,<3
+pandas>=2.1,<3
+scikit-learn==1.9.1
+joblib>=1.3,<2
+matplotlib>=3.8,<4
+psutil>=5.9,<9
+truststore>=0.10,<1
+argostranslate>=1.9,<3
