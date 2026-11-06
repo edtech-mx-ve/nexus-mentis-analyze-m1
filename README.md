@@ -12,7 +12,7 @@
 
 **🐍 Python 3.11 · ⚡ FastAPI · 🧮 scikit-learn · 🌐 HTML/CSS/JavaScript · 🐳 Docker**
 
-[📁 Repositorio GitHub](https://github.com/edtech-mx-ve/nexus-mentis-analyze-m1) · **☁️ Aplicación Cloud: pendiente de despliegue**
+[🌐 Abrir aplicación en Render](https://nexus-mentis-analyze-m1.onrender.com/) · [📁 Repositorio GitHub](https://github.com/edtech-mx-ve/nexus-mentis-analyze-m1)
 
 </div>
 
@@ -38,7 +38,8 @@ Aplicación académica para estudiar, comparar y aplicar técnicas de inteligenc
 | Evaluación final | **29.400 tweets reservados** |
 | Inferencia bilingüe | **Inglés directo**; **español → inglés** con Argos Translate local |
 | Estado GitHub | ✅ Código, README y artefactos publicados en `main` |
-| Estado de despliegue | ⏳ Pendiente de verificar en el proveedor Cloud |
+| Estado de despliegue | ✅ Interfaz pública accesible en **Render**: [abrir NEXUS ANALYZE](https://nexus-mentis-analyze-m1.onrender.com/) |
+| Verificación operativa Cloud | 🔎 Pendiente de documentar la comprobación completa de API, modelo y traducción |
 
 > **Resultado de referencia:** el desempeño formal del modelo corresponde a la **prueba reservada en inglés**. No debe presentarse como una medición del rendimiento general en español.
 
@@ -395,7 +396,11 @@ El sistema debe rechazar entradas inválidas y no anunciar `ready` si falta un r
 
 ## 14. ☁️ Despliegue en Render
 
-**Repositorio GitHub:** [edtech-mx-ve/nexus-mentis-analyze-m1](https://github.com/edtech-mx-ve/nexus-mentis-analyze-m1) (privado al momento de la publicación inicial).
+**🌐 Aplicación publicada:** [https://nexus-mentis-analyze-m1.onrender.com/](https://nexus-mentis-analyze-m1.onrender.com/)
+
+**📁 Repositorio GitHub:** [edtech-mx-ve/nexus-mentis-analyze-m1](https://github.com/edtech-mx-ve/nexus-mentis-analyze-m1)
+
+La **página principal del despliegue fue accesible el 6 de noviembre de 2026**. Esta comprobación confirma la entrega de la interfaz HTML, pero no equivale por sí sola a validar todos los endpoints, la carga del modelo o las predicciones.
 
 | Configuración | Valor |
 |---|---|
@@ -410,9 +415,32 @@ El sistema debe rechazar entradas inválidas y no anunciar `ready` si falta un r
 | Health check | `/healthz` |
 | Puerto | Gestionado mediante `PORT`; valor por defecto en Docker: `10000` |
 
-**Antes de declarar exitoso el despliegue**, confirmar que el build finaliza, `/healthz` responde correctamente, el reporte muestra el modelo real (`demo: false`), la interfaz carga y la traducción ES→EN puede clasificar entradas.
+### 🔎 Comprobaciones del despliegue público
 
-Argos Translate necesita recursos adicionales de memoria; una instancia pequeña puede resultar insuficiente. **GitHub publicado ≠ aplicación desplegada.** No se proporciona una URL Cloud hasta verificar que el proveedor la haya asignado.
+Desde PowerShell, sin modificar el servicio:
+
+```powershell
+$Base = 'https://nexus-mentis-analyze-m1.onrender.com'
+
+# Interfaz y preparación del servicio
+(Invoke-WebRequest -Uri "$Base/" -UseBasicParsing).StatusCode
+Invoke-RestMethod -Uri "$Base/healthz"
+
+# Estado del modelo, traductor y métricas formales
+Invoke-RestMethod -Uri "$Base/api/health"
+Invoke-RestMethod -Uri "$Base/api/metrics"
+
+# Prueba funcional: texto de ejemplo en inglés
+$Body = @{ text = 'I really enjoyed this movie.'; language = 'en' } |
+    ConvertTo-Json
+
+Invoke-RestMethod -Uri "$Base/api/predict" -Method Post `
+    -ContentType 'application/json; charset=utf-8' -Body $Body
+```
+
+**Criterios de aceptación:** `/healthz` debe informar que el servicio está preparado; `/api/health` debe mostrar el modelo real y la traducción ES→EN disponible; `/api/metrics` debe corresponder al reporte persistido; el laboratorio debe clasificar mensajes en inglés y español. La disponibilidad de la página principal **no sustituye** estas verificaciones.
+
+Argos Translate necesita recursos adicionales de memoria; una instancia pequeña puede resultar insuficiente. El corpus original de Sentiment140 **no es necesario para la inferencia** y no se publica en el servicio.
 
 ---
 
@@ -528,7 +556,9 @@ El repositorio incluye `MANIFEST_SHA256.txt` para consultar las huellas registra
 ### Enlaces del proyecto
 
 - **📁 GitHub:** https://github.com/edtech-mx-ve/nexus-mentis-analyze-m1
-- **🌐 Aplicación Cloud:** pendiente de despliegue y verificación.
+- **🌐 Aplicación en Render:** https://nexus-mentis-analyze-m1.onrender.com/
+- **🔎 Salud de servicio:** https://nexus-mentis-analyze-m1.onrender.com/healthz
+- **📖 Documentación API:** https://nexus-mentis-analyze-m1.onrender.com/docs
 - **🗃️ Dataset:** https://cs.stanford.edu/people/alecmgo/trainingandtestdata.zip
 
 ---
