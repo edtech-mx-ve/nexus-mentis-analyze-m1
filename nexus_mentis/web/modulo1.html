@@ -8,9 +8,9 @@
   <title>NEXUS ANALYZE · Práctica de NLP</title>
   <link rel="icon" href="/static/favicon.png" type="image/png">
   <link rel="stylesheet" href="/static/modulo1.css">
-  <link rel="stylesheet" href="/static/modulo1_info.css?v=m1info3">
+  <link rel="stylesheet" href="/static/modulo1_info.css?v=m1fundamentos1">
   <script src="/static/modulo1.js" defer></script>
-  <script src="/static/modulo1_info.js?v=m1info2" defer></script>
+  <script src="/static/modulo1_info.js?v=m1fundamentos1" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#principal">Saltar al contenido</a>
@@ -186,7 +186,7 @@
     <span class="step step-info" aria-hidden="true">i</span>
     <div>
       <h2 id="informacion-title">Información y apoyo</h2>
-      <p>Conoce el proyecto, el dataset, su identidad y los créditos académicos.</p>
+      <p>Conoce el proyecto, sus fundamentos, el dataset y los créditos académicos.</p>
     </div>
   </header>
   <div class="info-tablist" role="tablist" aria-label="Información complementaria">
@@ -194,6 +194,8 @@
             aria-controls="panel-acerca" tabindex="0">Acerca de</button>
     <button id="tab-dataset" class="info-tab" type="button" role="tab" aria-selected="false"
             aria-controls="panel-dataset" tabindex="-1">Dataset</button>
+    <button id="tab-fundamentos" class="info-tab" type="button" role="tab" aria-selected="false"
+            aria-controls="panel-fundamentos" tabindex="-1">Fundamentos</button>
     <button id="tab-trivia" class="info-tab" type="button" role="tab" aria-selected="false"
             aria-controls="panel-trivia" tabindex="-1">Trivia</button>
     <button id="tab-ayuda" class="info-tab" type="button" role="tab" aria-selected="false"
@@ -271,6 +273,75 @@
          target="_blank" rel="noopener noreferrer">Consultar artículo</a>.</p>
   </div>
 
+  <div class="info-panel info-fundamentos" id="panel-fundamentos" role="tabpanel"
+       aria-labelledby="tab-fundamentos" tabindex="0" hidden>
+    <h3>Fundamentos teóricos de NEXUS ANALYZE</h3>
+    <p>Conceptos esenciales para comprender el análisis de sentimientos de esta práctica.</p>
+
+    <h4>1. Inteligencia artificial y NLP</h4>
+    <p>El <strong>procesamiento del lenguaje natural (NLP)</strong> permite representar textos
+       y detectar patrones. En esta aplicación la salida es binaria:
+       <strong>positivo o negativo</strong>.</p>
+
+    <h4>2. Aprendizaje supervisado</h4>
+    <p>El algoritmo aprende de textos con etiquetas conocidas. Sentiment140 utiliza
+       <strong>supervisión distante</strong>: las etiquetas se obtuvieron a partir
+       de emoticonos y pueden contener errores.</p>
+
+    <h4>3. Dataset Sentiment140</h4>
+    <p>El corpus contiene <strong>1.600.000 tweets históricos en inglés</strong>.
+       El proyecto seleccionó 200.000 y preparó <strong>195.997</strong>
+       para entrenamiento, validación y prueba.</p>
+
+    <h4>4. Preprocesamiento y TF-IDF</h4>
+    <p>La normalización, los tokens y los n-gramas preparan el texto.
+       <strong>TF-IDF</strong> convierte palabras y combinaciones de palabras
+       en características numéricas ponderadas para el clasificador.</p>
+
+    <h4>5. Modelos de Machine Learning</h4>
+    <div class="info-model-grid">
+      <div class="info-model-card">
+        <strong>Naive Bayes</strong>
+        <p>Clasifica mediante probabilidades y supone independencia condicional
+           entre características del texto.</p>
+        <span>F1 macro de validación: <strong>78,72 %</strong></span>
+      </div>
+      <div class="info-model-card">
+        <strong>SVM lineal</strong>
+        <p>Busca un hiperplano que separe las clases y maximice el margen entre ellas.</p>
+        <span>F1 macro de validación: <strong>79,04 %</strong></span>
+      </div>
+      <div class="info-model-card">
+        <strong>Regresión logística</strong>
+        <p>Combina características TF-IDF con pesos aprendidos para estimar
+           el sentimiento. Es el <strong>modelo activo</strong>.</p>
+        <span>F1 macro de validación: <strong>80,44 %</strong></span>
+      </div>
+    </div>
+
+    <h4>6. Evaluación y generalización</h4>
+    <p>Se destinaron <strong>137.197</strong> tweets a entrenamiento,
+       <strong>29.400</strong> a validación y <strong>29.400</strong> a prueba.
+       Se analizan exactitud, precisión, recall, F1 macro y matriz de confusión.
+       El modelo seleccionado obtuvo <strong>79,97 % de F1 macro en prueba</strong>
+       sobre tweets en inglés.</p>
+
+    <h4>7. Inferencia y limitaciones</h4>
+    <p>La predicción sobre un tweet nuevo no garantiza comprender sarcasmos o ironías.
+       Los textos en español requieren traducción ES→EN mediante Argos Translate.
+       En Render Free, esta operación ha superado el límite de <strong>512 MB</strong>
+       de memoria; ello no altera las métricas formales del modelo.</p>
+
+    <div class="info-process" aria-label="Flujo resumido de inferencia">
+      Tweet <span aria-hidden="true">→</span> NLP
+      <span aria-hidden="true">→</span> TF-IDF
+      <span aria-hidden="true">→</span> Regresión logística
+      <span aria-hidden="true">→</span> Positivo / Negativo
+    </div>
+    <p class="info-muted">Los tres resultados de comparación son de validación;
+       el 79,97 % corresponde a la prueba reservada del clasificador seleccionado.</p>
+  </div>
+
   <div class="info-panel" id="panel-trivia" role="tabpanel" aria-labelledby="tab-trivia" tabindex="0" hidden>
     <h3>Trivia: ¿de dónde viene NEXUS MENTIS?</h3>
     <p><strong>NEXUS MENTIS</strong> combina dos términos de origen latino:</p>
@@ -330,6 +401,9 @@
        mediante preparación de datos, NLP, vectorización TF-IDF y clasificación
        binaria de sentimientos. Compara tres algoritmos supervisados, presenta
        sus métricas de evaluación y permite probar publicaciones en un laboratorio.</p>
+    <h4>Repositorio oficial</h4>
+    <p><a href="https://github.com/edtech-mx-ve/nexus-mentis-analyze-m1"
+          target="_blank" rel="noopener noreferrer">NEXUS ANALYZE — Código fuente y documentación en GitHub</a>.</p>
     <h4>Identificación técnica</h4>
     <div class="info-table-scroll">
       <table class="info-tech">

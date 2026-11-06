@@ -30,7 +30,7 @@
 
 .info-tablist {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: .45rem;
   margin: 0 0 .75rem;
 }
@@ -116,10 +116,34 @@
 .info-tech tbody th { width:36%; font-weight:700; }
 @media (max-width: 680px) {
   .info-tablist { grid-template-columns: repeat(2, minmax(0,1fr)); }
-  .info-tablist .info-tab:last-child { grid-column: 1 / -1; }
   .info-facts { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
 @media (max-width: 380px) {
   .info-facts { grid-template-columns: 1fr 1fr; }
   .info-data-list>div { grid-template-columns: 1fr; gap:0; }
+}
+
+/* Fundamentos M1: tarjetas y disposición responsiva. */
+.info-model-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .7rem;
+  margin: .75rem 0 1rem;
+}
+.info-model-card {
+  min-width: 0;
+  padding: .85rem;
+  border: 1px solid #dce9e8;
+  border-radius: 9px;
+  background: #f5f9f8;
+}
+.info-model-card > strong { display:block; margin-bottom:.35rem; color:var(--dark,#103942); }
+.info-model-card p { margin:0 0 .7rem; }
+.info-model-card span { color:var(--muted,#52676d); font-size:.9375rem; }
+@media (max-width: 900px) and (min-width: 681px) {
+  .info-tablist { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .info-model-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 680px) {
+  .info-model-grid { grid-template-columns: 1fr; }
 }

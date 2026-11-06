@@ -1,7 +1,7 @@
 /* NEXUS ANALYZE M1 - Navegacion accesible, sin cuestionarios ni llamadas a la API. */
 (() => {
   'use strict';
-  const ids = Object.freeze(['acerca','dataset','trivia','ayuda','institucional']);
+  const ids = Object.freeze(['acerca','dataset','fundamentos','trivia','ayuda','institucional']);
   const setup = () => {
     const tabs = ids.map(id => document.getElementById('tab-' + id));
     const panels = ids.map(id => document.getElementById('panel-' + id));
